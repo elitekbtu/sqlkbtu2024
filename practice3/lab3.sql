@@ -54,41 +54,41 @@ INSERT INTO customers(name,lastname, city) VALUES('Eric','Gomez', 'Shymkent');
 INSERT INTO customers(name,lastname, city) VALUES('Elizabeth','Tailor', 'Almaty');
 INSERT INTO customers(name,lastname, city) VALUES('Julia','Adams', 'Astana');
 
+select lastname from employees;
 
-SELECT lastname FROM employees;
+select distinct lastname from employees;
 
-SELECT DISTINCT lastname FROM employees;
+select * from employees where lastname = 'smith';
 
-SELECT * FROM employees WHERE lastname = 'Smith';
+select * from employees where lastname in ('smith', 'doe');
 
-SELECT * FROM employees WHERE lastname IN ('Smith', 'Doe');
+select * from employees where department = 14;
 
-SELECT * FROM employees WHERE department = 14;
+select * from employees where department in (37, 77);
 
-SELECT * FROM employees WHERE department IN (37, 77);
+select sum(budget) from departments;
 
-SELECT SUM(budget) FROM departments;
+select department, count(*) as employee_count from employees group by department;
 
-SELECT department, COUNT(*) AS employee_count FROM employees GROUP BY department;
+select department from employees group by department having count(*) > 2;
 
-SELECT department FROM employees GROUP BY department HAVING COUNT(*) > 2;
+select name from departments order by budget desc limit 1 offset 1;
 
-SELECT name FROM departments ORDER BY budget DESC LIMIT 1 OFFSET 1;
+select name, lastname from employees
+where department in (
+    select code from departments where budget = (select min(budget) from departments)
+)
+intersect
+select e.name, e.lastname from employees e;
 
-SELECT e.name, e.lastname FROM employees e
-JOIN departments d ON e.department = d.code
-WHERE d.budget = (SELECT MIN(budget) FROM departments);
+select name from employees where city = 'almaty' union select name from customers where city = 'almaty';
 
-SELECT name FROM employees WHERE city = 'Almaty'
-UNION
-SELECT name FROM customers WHERE city = 'Almaty';
+select * from departments where budget > 60000 order by budget asc, code desc;
 
-SELECT * FROM departments WHERE budget > 60000 ORDER BY budget ASC, code DESC;
+update departments set budget = budget * 0.9 where budget = (select min(budget) from departments);
 
-UPDATE departments SET budget = budget * 0.9 WHERE budget = (SELECT MIN(budget) FROM departments);
+update employees set department = 14 where department = (select code from departments where name = 'research');
 
-UPDATE employees SET department = 14 WHERE department = (SELECT code FROM departments WHERE name = 'Research');
+delete from employees where department = 14;
 
-DELETE FROM employees WHERE department = 14;
-
-DELETE FROM employees;
+delete from employees;
