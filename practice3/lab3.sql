@@ -79,12 +79,7 @@ select department from employees group by department having count(*) > 2;
 
 select name from departments order by budget desc limit 1 offset 1;
 
-select name, lastname from employees
-where department in (
-    select code from departments where budget = (select min(budget) from departments)
-)
-intersect
-select e.name, e.lastname from employees e;
+select name, lastname from employees where department in (select code from departments where budget = (select min(budget) from departments));
 
 select name from employees where city = 'almaty' union select name from customers where city = 'almaty';
 
