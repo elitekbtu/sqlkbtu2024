@@ -1,4 +1,9 @@
-CREATE DATABASE lab3;
+drop database if exists lab3;
+create database lab3;
+
+drop table if exists departments cascade;
+drop table if exists employees cascade; 
+drop table if  exists customers cascade;
 
 CREATE TABLE departments (
   code INTEGER PRIMARY KEY,
