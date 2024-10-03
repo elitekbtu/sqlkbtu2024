@@ -95,4 +95,6 @@ delete from employees where department = 14;
 delete from employees;
 
 
-
+select department, count(*) from employees group by department;
+select department from employees group by department having count(*)>2;
+select name, lastname from employees where department in( select code from department where budget =(select min(budget) from departments));
