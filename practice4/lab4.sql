@@ -1,16 +1,16 @@
 create database lab4;
 
 create table warehouse(
-    code integer,
+    code int,
     location varchar(255),
-    capacity integer
+    capacity int
 );
 
 create table boxes(
-    code character(4),
+    code char(4),
     contents varchar(255),
     value real,
-    warehouse integer
+    warehouse int
 );
 
 
@@ -49,39 +49,26 @@ where value>150;
 select  distinct contents
 from boxes;
 
-
 --7
 select warehouse ,COUNT(*) as warehouse_count
-from boxes
-group by warehouse;
-
+from boxes group by warehouse;
 
 --8
-select warehouse,COUNT(*) as warehouse_count
-    from boxes
-    group by warehouse
-Having count(*)>2;
-
+select warehouse,COUNT(*) as warehouse_count from boxes group by warehouse having count(*)>2;
 
 --9
-insert into warehouse(code, location, capacity)
-values(3,'New York',3);
+insert into warehouse(code, location, capacity) values(3,'New York',3);
 
 select * from warehouse;
 select * from boxes;
 
 --10
-insert into boxes(code, contents, value, warehouse)
-values('H5RT','Papers',200,2);
+insert into boxes(code, contents, value, warehouse) values('H5RT','Papers',200,2);
 select * from boxes;
 
-
-
 --11
-
 update boxes
-set value=value*0.85
-where value=(select value  from boxes order by  value desc offset 2 limit 1);
+set value=value*0.85 where value=(select value  from boxes order by  value desc offset 2 limit 1);
 
 
 --12
@@ -90,8 +77,4 @@ where value<150;
 
 
 --13
-delete from boxes
-using warehouse
-where boxes.warehouse=warehouse.code
-and warehouse.location='New York'
-returning *;
+delete from boxes using warehouse where boxes.warehouse=warehouse.code and warehouse.location='New York' returning *;
