@@ -143,3 +143,122 @@ select * from orders where customer_id in (select customer_id from customers) an
 select sum(grade) from customers;
 select * from customers where cust_name is not null;
 select max(grade) from customers;
+
+
+
+/*
+DDL (Data Definition Language) Tasks:
+Create a Table: Create a table employees with the following fields:
+
+id (integer, primary key)
+name (varchar(100), not null)
+position (varchar(50))
+salary (decimal(10, 2))
+hire_date (date)
+Modify a Table:
+Add a new column department (varchar(50)) to the employees table.
+
+Drop a Table:
+Drop the departments table from the database.
+
+Alter a Column:
+Change the data type of the salary column in the employees table to integer.
+
+Create Index:
+Create an index on the salary column in the employees table for faster queries.
+
+DML (Data Manipulation Language) Tasks:
+Insert Records:
+Insert 3 new employees into the employees table with different names, positions, and salaries.
+
+Update Records:
+Update the salary of the employee whose id is 2, setting it to 75000.
+
+Delete Records:
+Delete all employees who have a salary less than 30000 from the employees table.
+
+Bulk Insert:
+Insert multiple rows into the employees table in one query with values for name, position, and salary.
+
+Merge/Upsert:
+Insert a new employee or update the salary of an existing employee if the id already exists.
+
+DQL (Data Query Language) Tasks:
+Select Basic:
+Retrieve all columns from the employees table.
+
+Conditional Select:
+Select all employees who have a salary greater than 50000.
+
+Join Tables:
+Join the employees table with a departments table and retrieve the employee names along with their department names.
+
+Group By and Aggregate:
+Group employees by their position and calculate the average salary for each position.
+
+Order By:
+Select all employees and order them by their hire_date in descending order.
+
+Use Subqueries:
+Select all employees whose salary is higher than the average salary of all employees.
+*/
+
+/*
+DDL (Data Definition Language) Tasks:
+Create a Table: Create a table employees with the following fields:
+
+id (integer, primary key)
+name (varchar(100), not null)
+position (varchar(50))
+salary (decimal(10, 2))
+hire_date (date)
+Modify a Table:
+Add a new column department (varchar(50)) to the employees table.
+*/
+
+create table employees(
+    id integer primary key, 
+    name varchar(100) not null, 
+    position varchar(50), 
+    salary decimal(10, 2),
+    hire_date date
+);
+
+alter table employees add column department varchar(50); 
+drop table departments; 
+alter table employees alter column salary type integer using salary::integer;
+create index idx_salary on employees(salary);
+
+insert into employees (id, name, position, salary, hire_date)
+values 
+(1, 'John Doe', 'Software Engineer', 60000, '2024-01-15'),
+(2, 'Jane Smith', 'Product Manager', 85000, '2023-11-01'),
+(3, 'Alice Johnson', 'Designer', 45000, '2024-05-10');
+
+update employees
+set salary = 75000
+where id = 2;
+
+delete from employees
+where salary < 30000;
+
+insert into employees (id, name, position, salary, hire_date)
+values 
+(4, 'Mark Brown', 'HR Manager', 50000, '2024-03-21'),
+(5, 'Emily Davis', 'Data Scientist', 95000, '2023-07-14'),
+(6, 'Chris Wilson', 'Marketing Coordinator', 42000, '2024-09-05');
+
+
+insert into employees (id, name, position, salary, hire_date)
+values (2, 'Jane Smith', 'Product Manager', 90000, '2023-11-01')
+on conflict (id)
+do update set salary = excluded.salary;
+
+select * from employees; 
+select * from employees where salary>50000; 
+select e.name, d.name from employee e join departments d on e.id = d.id; 
+
+select position, avg(position) from employees group by position;
+select * from employees where salary>(select avg(salary) from employees);
+
+
