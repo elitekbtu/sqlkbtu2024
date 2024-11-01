@@ -205,7 +205,7 @@ Select all employees whose salary is higher than the average salary of all emplo
 
 /*
 DDL (Data Definition Language) Tasks:
-Create a Table: Create a table employees with the following fields:
+Create a Table: Create a table employees with the f ollowing fields:
 
 id (integer, primary key)
 name (varchar(100), not null)
@@ -258,7 +258,7 @@ select * from employees;
 select * from employees where salary>50000; 
 select e.name, d.name from employee e join departments d on e.id = d.id; 
 
-select position, avg(position) from employees group by position;
+select position, avg(salary) from employees group by position;
 select * from employees where salary>(select avg(salary) from employees);
 
 
