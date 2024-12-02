@@ -31,3 +31,31 @@ drop view if exists myview5;
 --(sum, count, avg, min, max etc)
 
 
+create view testview as select name, gender from prsdt; 
+insert into testview (name, gender) values (default, default);
+
+
+-- roles and membership, ownership
+
+create role name; 
+drop role name; 
+
+--select existing roles 
+
+select rolname from pg_roles; 
+
+create role myrole login; 
+create user myrole; 
+create role myrole2 createdb; 
+--create role ability
+create role rolecreator createrole; 
+--create role with password
+
+create role myrolewps password 'mypass'; 
+
+alter role myrolewps with password 'newpass'; 
+alter role myrolewps with password null;
+alter role myrolewps createdb createrole; 
+
+--role membership
+
