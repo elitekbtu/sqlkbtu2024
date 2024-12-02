@@ -69,3 +69,7 @@ alter table prsdt owner to myrole;
 reassign owned by myrole to myrole2; 
 drop owned by myrole; 
 drop role myrole;  
+
+
+
+create newdb2; 
