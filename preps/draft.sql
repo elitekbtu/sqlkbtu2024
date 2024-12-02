@@ -59,3 +59,13 @@ alter role myrolewps createdb createrole;
 
 --role membership
 
+grant select insert on table prsdt to myrolewps; 
+grant all privileges on database newdb to myrole2; 
+grant myrolewps to myrole; 
+drop role myrole2; 
+--ownership 
+
+alter table prsdt owner to myrole; 
+reassign owned by myrole to myrole2; 
+drop owned by myrole; 
+drop role myrole;  
