@@ -1,4 +1,3 @@
-
 CREATE  database  lab10;
 CREATE TABLE Books (
     book_id SERIAL PRIMARY KEY,
@@ -28,49 +27,62 @@ VALUES
     ('Learn SQL', 'B. Johnson', 35.00, 15),
     ('Advanced DB', 'C. Lee', 50.00, 5);
 
-INSERT INTO Customers (name, email)
+INSERT INTO Customers (customer_id,name, email)
 VALUES
-    ('John Doe', 'johndoe@example.com'),
-    ('Jane Doe', 'janedoe@example.com');
+    (101,'John Doe', 'johndoe@example.com'),
+    (102,'Jane Doe', 'janedoe@example.com');
 
 --1
-BEGIN;
-INSERT INTO Orders (book_id, customer_id, order_date, quantity)
-VALUES (1, 101, CURRENT_DATE, 2);
-UPDATE Books SET quantity = quantity - 2 WHERE book_id = 1;
-COMMIT;
+DO $$
+begin
+insert into orders(book_id, customer_id, order_date, quantity) values (1,101,CURRENT_DATE,2);
+update books
+set quantity=quantity-2
+where book_id=1;
+end $$;
+
+select * from books;
+select * from orders;
 
 --2
 DO $$
-BEGIN
-    IF (SELECT quantity FROM Books WHERE book_id = 3) < 10 THEN
-        RAISE NOTICE 'Insufficient quantity for book_id 3';
-        ROLLBACK;
-    ELSE
-        INSERT INTO Orders (order_id, book_id, customer_id, order_date, quantity)
-        VALUES (2, 3, 102, CURRENT_DATE, 10);
+    begin
+        if (select Books.quantity from books where book_id=3)<10
+        then
+            raise notice  'No enough quantity';
+            rollback ;
+        else
+        insert into orders(book_id, customer_id, order_date, quantity) values(3,102,current_date,10);
+        update books
+        set quantity=quantity-10
+        where book_id=3;
+        commit;
+    end if;
+        end
 
-        UPDATE Books SET quantity = quantity - 10 WHERE book_id = 3;
-        COMMIT;
-    END IF;
-END $$;
-SELECT * FROM Books;
-SELECT * FROM Orders;
+$$;
+select * from books;
+select *  from orders;
+
+
 
 --3
-BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
-UPDATE Books SET price = 38.00 WHERE book_id = 2;
-COMMIT;
+    begin transaction   isolation level read committed;
+    update books set price =45 where book_id=2;
+commit;
+begin transaction  isolation level  read committed ;
+select price from books where book_id=2;
 
-BEGIN TRANSACTION ISOLATION LEVEL READ COMMITTED;
-SELECT price FROM Books WHERE book_id = 2;
+select price from books where book_id=2;
+commit;
 
-SELECT price FROM Books WHERE book_id = 2;
-COMMIT;
+select * from books;
 
+
+select * from customers;
 --4
-BEGIN;
-UPDATE Customers SET email = 'newemail@example.com' WHERE customer_id = 101;
-COMMIT;
+begin transaction ;
+update customers set email='turarbek@gmail.com' where customer_id=101 ;
+commit;
 
-SELECT * FROM Customers WHERE customer_id = 101;
+select * from customers where customer_id=101;
