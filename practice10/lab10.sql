@@ -44,7 +44,6 @@ end $$;
 select * from books;
 select * from orders;
 
---2
 DO $$
     begin
         if (select Books.quantity from books where book_id=3)<10
